@@ -1,10 +1,12 @@
 package com.intern.work.controller;
 
+import com.intern.work.config.jwt.JwtUtil;
 import com.intern.work.controller.request.LoginRequestDto;
 import com.intern.work.controller.request.SignUpRequestDto;
 import com.intern.work.controller.response.LoginResponseDto;
 import com.intern.work.controller.response.SignUpResponseDto;
 import com.intern.work.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto request) {
@@ -27,8 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
-        LoginResponseDto response = LoginResponseDto.from(authService.login(loginRequest.toDto()));
+    public ResponseEntity<LoginResponseDto> login(HttpServletResponse httpResponse, @RequestBody LoginRequestDto loginRequest) {
+        LoginResponseDto response = LoginResponseDto.from(authService.login(httpResponse, loginRequest.toDto()));
         return ResponseEntity.ok(response);
     }
 }

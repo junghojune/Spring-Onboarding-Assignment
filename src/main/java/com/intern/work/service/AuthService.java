@@ -5,6 +5,7 @@ import com.intern.work.domain.User;
 import com.intern.work.domain.dto.UserDto;
 import com.intern.work.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class AuthService {
         }
     }
 
-    public String login(UserDto dto) {
+    public String login(HttpServletResponse httpResponse, UserDto dto) {
         String password = dto.password();
         User user = userRepository.findByUsername(dto.username())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -39,7 +40,9 @@ public class AuthService {
         if(!passwordEncoder.matches(password, user.getPassword())){
             throw new IllegalArgumentException("Wrong password");
         }
-
-        return jwtUtil.createToken(user.getUsername(), user.getUserRole());
+        String token = jwtUtil.createToken(user.getUsername(), user.getUserRole());
+        String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getUserRole());
+        jwtUtil.setRefreshToken(httpResponse, refreshToken);
+        return token;
     }
 }

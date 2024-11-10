@@ -7,13 +7,12 @@ import com.intern.work.domain.dto.UserDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.io.IOException;
 
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -21,7 +20,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        setFilterProcessesUrl("/api/public/user/login");
+//        setFilterProcessesUrl("/api/auth/login");
     }
 
     @Override
@@ -49,7 +48,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserRole role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getUserRole();
 
         String token = jwtUtil.createToken(username, role);
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, "bearer " + token);
     }
 
     @Override
