@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @Getter
 @Entity
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Table(name = "p_user")
