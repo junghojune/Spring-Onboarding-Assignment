@@ -43,4 +43,13 @@ public class User extends BaseEntity {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    public static User of(String username, String encodePassword, UserRole role, String nickname) {
+        return User.builder()
+                .username(username)
+                .password(encodePassword)
+                .nickname(nickname)
+                .userRole(role)
+                .build();
+    }
 }
