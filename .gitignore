@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 비밀 키 관련 ###
+/src/main/resources/SECRET.yml
