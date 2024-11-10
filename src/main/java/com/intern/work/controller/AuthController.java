@@ -1,6 +1,5 @@
 package com.intern.work.controller;
 
-import com.intern.work.config.jwt.JwtUtil;
 import com.intern.work.controller.request.LoginRequestDto;
 import com.intern.work.controller.request.SignUpRequestDto;
 import com.intern.work.controller.response.LoginResponseDto;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    private final JwtUtil jwtUtil;
 
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpRequestDto request) {
